@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>APTIS Practice Test 1 — POP DOSSIER</title>
+<style>
+:root{
+  --ink:#17171c;
+  --paper:#fffdf7;
+  --paper2:#f5f0e8;
+  --bg:#111218;
+  --muted:#6c6a74;
+  --line:#26262d;
+  --yellow:#f7df56;
+  --lime:#c8f36a;
+  --coral:#ff7b6f;
+  --blue:#77a8ff;
+  --violet:#c9a7ff;
+  --green:#1f9d64;
+  --red:#d84a4a;
+  --shadow:0 12px 34px rgba(0,0,0,.18);
+  --r:22px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(119,168,255,.12), transparent 28%),
+    radial-gradient(circle at 86% 14%, rgba(201,167,255,.12), transparent 26%),
+    radial-gradient(circle at 18% 90%, rgba(200,243,106,.08), transparent 25%),
+    var(--bg);
+  color:#fff;
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+}
+button,select,input{font:inherit}
+button{cursor:pointer}
+.wrap{max-width:980px;margin:0 auto;padding:14px 14px 90px}
+.topbar{
+  position:sticky;top:0;z-index:20;
+  margin:0 -2px 16px;
+  background:rgba(17,18,24,.90);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:20px;
+  padding:12px;
+  box-shadow:0 10px 30px rgba(0,0,0,.22);
+}
+.brandrow{display:flex;gap:12px;align-items:center;justify-content:space-between}
+.brand{display:flex;gap:11px;align-items:center;min-width:0}
+.badge{
+  flex:0 0 auto;
+  width:48px;height:48px;border-radius:15px;
+  display:grid;place-items:center;
+  background:var(--yellow);color:var(--ink);
+  border:2px solid var(--ink);
+  font-weight:1000;transform:rotate(-2deg);
+  box-shadow:3px 3px 0 #000;
+}
+.brandtext{min-width:0}
+.eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#c7c8d1;font-weight:900}
+h1{font-size:clamp(18px,4.4vw,28px);line-height:1.03;margin:3px 0 0;font-weight:1000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.scorebox{display:flex;gap:7px;align-items:center}
+.kpi{
+  background:#20212a;border:1px solid #343642;border-radius:14px;
+  padding:8px 10px;min-width:68px;text-align:center
+}
+.kpi b{display:block;font-size:18px;line-height:1}
+.kpi span{font-size:9px;color:#aeb0ba;text-transform:uppercase;letter-spacing:.09em;font-weight:900}
+.reset{
+  border:1px solid #3a3b46;background:#23242d;color:#fff;
+  border-radius:13px;padding:10px 11px;font-weight:900
+}
+.progressline{margin-top:10px;height:7px;background:#2b2c34;border-radius:999px;overflow:hidden}
+.progressline>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--lime),var(--yellow));transition:.25s}
+
+.hero{
+  position:relative;overflow:hidden;
+  background:var(--paper);color:var(--ink);
+  border:2px solid var(--ink);border-radius:var(--r);
+  padding:20px;margin-bottom:14px;box-shadow:var(--shadow);
+}
+.hero:before{
+  content:"PRACTICE 01";position:absolute;right:-14px;top:14px;
+  background:var(--coral);border:2px solid var(--ink);
+  padding:7px 20px;font-size:11px;font-weight:1000;letter-spacing:.08em;
+  transform:rotate(4deg)
+}
+.hero h2{margin:0 0 8px;font-size:clamp(23px,6vw,42px);letter-spacing:-.04em;line-height:.94}
+.hero p{margin:0;max-width:720px;color:#55525c;font-size:14px;line-height:1.55}
+.hero .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+.chip{padding:7px 10px;border:2px solid var(--ink);border-radius:999px;font-size:11px;font-weight:900;background:#fff}
+.chip:nth-child(1){background:var(--lime)}
+.chip:nth-child(2){background:var(--blue)}
+.chip:nth-child(3){background:var(--violet)}
+
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}
+.tab{
+  border:1px solid #393b47;background:#20212a;color:#b9bbc5;
+  border-radius:16px;padding:12px 14px;font-weight:1000
+}
+.tab.active{background:var(--yellow);color:var(--ink);border:2px solid var(--ink);box-shadow:3px 3px 0 #000}
+
+.stepbar{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-bottom:10px}
+.step{
+  border:1px solid #383a45;background:#1d1e26;color:#aeb0ba;
+  border-radius:12px;padding:9px 5px;font-size:11px;font-weight:1000
+}
+.step.active{background:#fff;color:var(--ink);border-color:#fff}
+.step.done:after{content:" ✓";color:var(--green)}
+.step.active.done:after{color:var(--green)}
+
+.module{
+  background:var(--paper);color:var(--ink);
+  border:2px solid var(--ink);border-radius:var(--r);
+  box-shadow:var(--shadow);overflow:hidden
+}
+.modulehead{
+  padding:15px 17px 13px;border-bottom:2px solid var(--ink);
+  display:flex;justify-content:space-between;gap:12px;align-items:center
+}
+.moduletitle{min-width:0}
+.moduletitle small{font-size:10px;font-weight:1000;letter-spacing:.12em;text-transform:uppercase;color:#6f6b74}
+.moduletitle h3{font-size:20px;margin:2px 0 0;letter-spacing:-.02em}
+.modulecount{
+  flex:0 0 auto;border:2px solid var(--ink);background:var(--lime);
+  border-radius:12px;padding:7px 10px;font-size:11px;font-weight:1000
+}
+.instructions{padding:12px 17px;background:var(--paper2);border-bottom:1px solid #ded9d0;color:#5d5962;font-size:12px;line-height:1.45}
+.bank{
+  margin-top:9px;display:flex;flex-wrap:wrap;gap:6px
+}
+.bank span{
+  background:#fff;border:1px solid #cfc9bf;border-radius:999px;
+  padding:5px 8px;color:#35333a;font-weight:800;font-size:11px
+}
+.questions{padding:4px 13px 8px}
+.qcard{
+  position:relative;padding:15px 4px 15px;border-bottom:1px dashed #cfcac2;
+}
+.qcard:last-child{border-bottom:none}
+.qnum{
+  display:inline-grid;place-items:center;width:30px;height:30px;
+  border:2px solid var(--ink);border-radius:10px;background:var(--blue);
+  font-weight:1000;margin-right:7px;vertical-align:top
+}
+.qtext{display:inline;font-size:15px;line-height:1.45;font-weight:800}
+.dialogue{font-weight:700}
+.options{display:grid;gap:8px;margin:11px 0 0 38px}
+.opt{
+  position:relative;text-align:left;border:1.5px solid #c9c5bd;background:#fff;
+  border-radius:14px;padding:11px 12px;color:var(--ink);
+  transition:.15s;font-weight:750
+}
+.opt:hover{transform:translateY(-1px);border-color:#85827b}
+.opt .letter{
+  display:inline-grid;place-items:center;width:25px;height:25px;border:1.5px solid var(--ink);border-radius:50%;
+  margin-right:8px;font-size:11px;font-weight:1000
+}
+.opt.correct{background:#eaf8f0;border-color:var(--green);box-shadow:inset 0 0 0 1px var(--green)}
+.opt.wrong{background:#fff0f0;border-color:var(--red);box-shadow:inset 0 0 0 1px var(--red)}
+.opt.reveal{background:#eef9f3;border-color:var(--green)}
+.feedback{
+  display:none;margin:9px 0 0 38px;border-radius:12px;padding:9px 11px;
+  font-size:12px;line-height:1.48;font-weight:700
+}
+.feedback.show{display:block}
+.feedback.good{background:#e9f7ef;color:#12623e;border:1px solid #bce5ce}
+.feedback.bad{background:#fff0f0;color:#8a2c2c;border:1px solid #f0c7c7}
+.explain{font-weight:650;color:#4c4a50;margin-top:7px;line-height:1.58}
+.explain b{color:#17171c}
+.feedback .explain br{display:block;content:"";margin-top:4px}
+.feedback.good .explain{color:#315346}
+.feedback.bad .explain{color:#5a4242}
+select.vocab{
+  width:calc(100% - 38px);margin:10px 0 0 38px;
+  background:#fff;color:var(--ink);border:1.5px solid #c9c5bd;
+  border-radius:13px;padding:11px 12px;font-weight:800;outline:none
+}
+select.vocab.correct{border-color:var(--green);background:#edf9f2}
+select.vocab.wrong{border-color:var(--red);background:#fff1f1}
+.answerhint{font-size:11px;color:#77727b;margin:6px 0 0 38px}
+
+.navrow{
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;
+  padding:13px;border-top:2px solid var(--ink);background:var(--paper2)
+}
+.navbtn{
+  border:2px solid var(--ink);background:#fff;color:var(--ink);
+  border-radius:13px;padding:10px 12px;font-weight:1000
+}
+.navbtn.next{background:var(--yellow)}
+.navbtn:disabled{opacity:.35;cursor:not-allowed}
+.pageinfo{font-size:11px;font-weight:1000;color:#66616a}
+
+.resultcard{
+  display:none;margin-top:14px;background:#fff;color:var(--ink);
+  border:2px solid var(--ink);border-radius:var(--r);padding:18px;box-shadow:var(--shadow)
+}
+.resultcard.show{display:block}
+.resultgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.resultmetric{border:2px solid var(--ink);border-radius:16px;padding:12px;text-align:center}
+.resultmetric:nth-child(1){background:var(--yellow)}
+.resultmetric:nth-child(2){background:var(--blue)}
+.resultmetric:nth-child(3){background:var(--violet)}
+.resultmetric b{display:block;font-size:26px}
+.resultmetric span{font-size:10px;text-transform:uppercase;letter-spacing:.08em;font-weight:1000}
+.resultcard h3{margin:14px 0 6px}
+.resultcard p{margin:0;color:#57535c;font-size:13px;line-height:1.5}
+
+.floating{
+  position:fixed;left:50%;transform:translateX(-50%);bottom:max(12px, env(safe-area-inset-bottom));
+  z-index:40;
+  display:flex;gap:8px;padding:7px;
+  border:1px solid rgba(255,255,255,.13);background:rgba(22,23,29,.92);
+  backdrop-filter:blur(12px);border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.28)
+}
+.floatbtn{
+  border:0;border-radius:12px;padding:10px 13px;font-size:11px;font-weight:1000;background:#2c2e37;color:#fff
+}
+.floatbtn.primary{background:var(--lime);color:var(--ink)}
+.floatbtn.secondary{background:var(--yellow);color:var(--ink)}
+.hidden{display:none!important}
+
+@media (max-width:600px){
+  .wrap{padding:9px 9px 86px}
+  .topbar{border-radius:16px;padding:9px}
+  .badge{width:42px;height:42px;border-radius:12px}
+  .eyebrow{font-size:9px}
+  h1{font-size:17px}
+  .kpi{min-width:58px;padding:7px}
+  .kpi b{font-size:16px}
+  .reset{padding:9px}
+  .hero{padding:16px}
+  .hero:before{font-size:9px;right:-18px;top:12px}
+  .hero h2{font-size:30px}
+  .questions{padding:2px 11px 7px}
+  .qcard{padding:13px 1px}
+  .qtext{font-size:14px}
+  .options{margin-left:35px}
+  .feedback{margin-left:35px}
+  select.vocab{width:calc(100% - 35px);margin-left:35px}
+  .answerhint{margin-left:35px}
+  .resultgrid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="topbar">
+    <div class="brandrow">
+      <div class="brand">
+        <div class="badge">A1</div>
+        <div class="brandtext">
+          <div class="eyebrow">APTIS • POP DOSSIER</div>
+          <h1>Practice Test 1</h1>
+        </div>
+      </div>
+      <div class="scorebox">
+        <div class="kpi"><b id="scoreTop">0</b><span>score / 50</span></div>
+        <div class="kpi"><b id="answeredTop">0</b><span>answered</span></div>
+        <button class="reset" id="resetBtn" title="Reset test">↻</button>
+      </div>
+    </div>
+    <div class="progressline"><i id="progressBar"></i></div>
+  </section>
+
+  <section class="hero">
+    <h2>GRAMMAR +<br>VOCABULARY</h2>
+    <p>Self-marking study edition based on the uploaded Practice Test 1 pages. Answers are checked immediately. Nothing is saved to browser storage, so you can reset and redo the test at any time.</p>
+    <div class="chips">
+      <span class="chip">50 ITEMS</span>
+      <span class="chip">INSTANT CHECK</span>
+      <span class="chip">NO CACHE</span>
+    </div>
+  </section>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="grammar">GRAMMAR · 25</button>
+    <button class="tab" data-tab="vocab">VOCABULARY · 25</button>
+  </div>
+
+  <div class="stepbar" id="stepbar"></div>
+  <section class="module" id="module"></section>
+
+  <section class="resultcard" id="resultCard">
+    <div class="eyebrow" style="color:#615d66">DOSSIER RESULT</div>
+    <div class="resultgrid">
+      <div class="resultmetric"><b id="resTotal">0/50</b><span>Total</span></div>
+      <div class="resultmetric"><b id="resGrammar">0/25</b><span>Grammar</span></div>
+      <div class="resultmetric"><b id="resVocab">0/25</b><span>Vocabulary</span></div>
+    </div>
+    <h3 id="resTitle">Keep going.</h3>
+    <p id="resMsg">Complete more items to build a clearer accuracy profile.</p>
+  </section>
+</div>
+
+<div class="floating">
+  <button class="floatbtn" id="jumpWrong">REVIEW WRONG</button>
+  <button class="floatbtn secondary" id="showResult">RESULT</button>
+  <button class="floatbtn primary" id="nextFloat">NEXT →</button>
+</div>
+
+<script>
+const grammar = [{"q":"There were ______ than ten people at the party.","opts":["less","fewer","lesser"],"a":1,"why":"<b>VI:</b> Có <b>ít hơn mười người</b> ở bữa tiệc.<br><b>RULE:</b> Dùng <b>fewer</b> với danh từ đếm được số nhiều: <b>fewer people</b>. <i>Less</i> thường đi với danh từ không đếm được.<br><b>KEY CHUNKS:</b> <b>fewer than + number</b> = ít hơn…; <b>at the party</b> = tại bữa tiệc."},{"q":"A. I love British desserts! Especially hot chocolate fudge cake with ice-cream.<br>B. So ______ I!","opts":["is","am","do"],"a":2,"why":"<b>VI:</b> A: Tôi rất thích các món tráng miệng của Anh, đặc biệt là bánh fudge sô-cô-la nóng ăn với kem. B: <b>Tôi cũng vậy!</b><br><b>RULE:</b> Động từ chính là <b>love</b>, nên dùng trợ động từ <b>do</b>: <b>So do I.</b><br><b>KEY CHUNKS:</b> <b>love + noun</b> = rất thích…; <b>So do I</b> = tôi cũng vậy; <b>with ice-cream</b> = dùng kèm kem."},{"q":"I was wondering if you ______ like to go out for dinner with me this evening?","opts":["are","would","will"],"a":1,"why":"<b>VI:</b> Tôi đang tự hỏi liệu tối nay bạn <b>có muốn đi ăn tối cùng tôi không</b>?<br><b>RULE:</b> Mẫu mời lịch sự: <b>I was wondering if you would like to + V</b>.<br><b>KEY CHUNKS:</b> <b>would like to + V</b> = muốn làm gì; <b>go out for dinner</b> = ra ngoài ăn tối; <b>with someone</b> = cùng ai."},{"q":"If you were nicer to him, he ______ probably help you more at work.","opts":["would","will","has"],"a":0,"why":"<b>VI:</b> Nếu bạn đối xử tử tế với anh ấy hơn, có lẽ anh ấy <b>sẽ giúp bạn nhiều hơn trong công việc</b>.<br><b>RULE:</b> Câu điều kiện loại 2: <b>If + past simple, would + V</b>.<br><b>KEY CHUNKS:</b> <b>be nice to someone</b> = tử tế với ai; <b>help someone at work</b> = giúp ai trong công việc."},{"q":"I am going to the cinema tonight with my friend. We ______ at the train station at 7pm.","opts":["will meet","meet","are meeting"],"a":2,"why":"<b>VI:</b> Tối nay tôi sẽ đi xem phim với bạn. Chúng tôi <b>hẹn gặp nhau ở ga tàu lúc 7 giờ tối</b>.<br><b>RULE:</b> Present continuous dùng cho <b>kế hoạch/sắp xếp đã chốt</b> trong tương lai: <b>We are meeting…</b><br><b>KEY CHUNKS:</b> <b>go to the cinema</b> = đi xem phim; <b>meet at + place</b> = gặp tại…; <b>at 7pm</b> = lúc 7 giờ tối."},{"q":"If I ______ you, I would tell her how you feel.","opts":["am","were","be"],"a":1,"why":"<b>VI:</b> <b>Nếu tôi là bạn</b>, tôi sẽ nói cho cô ấy biết bạn cảm thấy thế nào.<br><b>RULE:</b> Mẫu giả định đưa lời khuyên: <b>If I were you, I would + V</b>.<br><b>KEY CHUNKS:</b> <b>If I were you</b> = nếu tôi là bạn; <b>tell someone how you feel</b> = nói cho ai biết cảm xúc của mình."},{"q":"I ______ down the street, when I bumped into Susan.","opts":["was walking","walked","am walking"],"a":0,"why":"<b>VI:</b> Tôi <b>đang đi bộ dọc phố</b> thì tình cờ gặp Susan.<br><b>RULE:</b> Hành động đang diễn ra trong quá khứ dùng <b>past continuous</b>; hành động xen vào dùng <b>past simple</b>.<br><b>KEY CHUNKS:</b> <b>walk down the street</b> = đi dọc con phố; <b>bump into someone</b> = tình cờ gặp ai."},{"q":"Would you mind ______ me with the housework?","opts":["helping","to help","help"],"a":0,"why":"<b>VI:</b> Bạn <b>có phiền giúp tôi làm việc nhà không</b>?<br><b>RULE:</b> Sau <b>Would you mind</b> dùng <b>V-ing</b>: <b>Would you mind helping…?</b><br><b>KEY CHUNKS:</b> <b>would you mind + V-ing?</b> = bạn có phiền…?; <b>help someone with something</b> = giúp ai việc gì; <b>do the housework</b> = làm việc nhà."},{"q":"A. ______ visited the British Museum?<br>B. Yes. It was really interesting to see all the exhibitions.","opts":["Did you ever","Have you ever","Are you ever"],"a":1,"why":"<b>VI:</b> A: Bạn <b>đã từng đến Bảo tàng Anh chưa</b>? B: Rồi. Thật sự rất thú vị khi được xem tất cả các cuộc triển lãm.<br><b>RULE:</b> Hỏi trải nghiệm trong đời với <b>ever</b> → <b>present perfect</b>: <b>Have you ever + V3?</b><br><b>KEY CHUNKS:</b> <b>Have you ever…?</b> = bạn đã từng… chưa?; <b>visit a museum</b> = tham quan bảo tàng; <b>see an exhibition</b> = xem triển lãm."},{"q":"I'm afraid that I can't work tomorrow morning. I ______ a doctor's appointment.","opts":["will have","am having","have"],"a":1,"why":"<b>VI:</b> Tôi e rằng sáng mai tôi không thể đi làm. Tôi <b>có lịch hẹn với bác sĩ</b>.<br><b>RULE:</b> Present continuous có thể diễn tả một <b>lịch hẹn/sắp xếp đã được lên kế hoạch</b>: <b>I am having…</b><br><b>KEY CHUNKS:</b> <b>have a doctor's appointment</b> = có lịch hẹn với bác sĩ; <b>tomorrow morning</b> = sáng mai; <b>I'm afraid that…</b> = tôi e rằng…."},{"q":"When I was a young child, my mother ______ bake cakes and biscuits with us every Sunday afternoon.","opts":["use to","would","will"],"a":1,"why":"<b>VI:</b> Khi tôi còn nhỏ, mẹ tôi <b>thường làm bánh ngọt và bánh quy cùng chúng tôi vào mỗi chiều Chủ nhật</b>.<br><b>RULE:</b> <b>would + V</b> dùng cho hành động lặp lại trong quá khứ. Đáp án <i>use to</i> sai vì câu khẳng định phải là <b>used to</b>.<br><b>KEY CHUNKS:</b> <b>would + V</b> = thường làm gì trong quá khứ; <b>bake cakes and biscuits</b> = nướng bánh và bánh quy."},{"q":"Jamie is ______ person I have ever met.","opts":["smartest","the most smarter","the smartest"],"a":2,"why":"<b>VI:</b> Jamie là <b>người thông minh nhất mà tôi từng gặp</b>.<br><b>RULE:</b> So sánh nhất của <b>smart</b> là <b>the smartest</b>. Không dùng <i>most + -er</i>.<br><b>KEY CHUNKS:</b> <b>the smartest person</b> = người thông minh nhất; <b>I have ever met</b> = mà tôi từng gặp."},{"q":"He is a comedian, ______ he is quite serious when he isn't performing.","opts":["and","because","but"],"a":2,"why":"<b>VI:</b> Anh ấy là một diễn viên hài, <b>nhưng</b> anh ấy khá nghiêm túc khi không biểu diễn.<br><b>RULE:</b> Hai ý tương phản → dùng <b>but</b>.<br><b>KEY CHUNKS:</b> <b>be a comedian</b> = là diễn viên hài; <b>be quite serious</b> = khá nghiêm túc; <b>perform</b> = biểu diễn."},{"q":"Go to the end of the road and turn ______ left at the train station.","opts":["to","on","—"],"a":2,"why":"<b>VI:</b> Đi đến cuối đường rồi <b>rẽ trái ở ga tàu</b>.<br><b>RULE:</b> Với chỉ đường, nói <b>turn left / turn right</b>, không dùng giới từ ở giữa.<br><b>KEY CHUNKS:</b> <b>go to the end of the road</b> = đi đến cuối đường; <b>turn left</b> = rẽ trái; <b>at the train station</b> = tại ga tàu."},{"q":"The meeting ______ finished when we arrived at the office.","opts":["has already","had already","hadn't already"],"a":1,"why":"<b>VI:</b> Cuộc họp <b>đã kết thúc trước khi chúng tôi đến văn phòng</b>.<br><b>RULE:</b> Hành động xảy ra trước một hành động khác trong quá khứ → <b>past perfect: had + V3</b>.<br><b>KEY CHUNKS:</b> <b>had already finished</b> = đã kết thúc rồi; <b>arrive at the office</b> = đến văn phòng."},{"q":"A wolf is an animal ______ walks on four legs.","opts":["that","who","what"],"a":0,"why":"<b>VI:</b> Sói là một loài động vật <b>đi bằng bốn chân</b>.<br><b>RULE:</b> Trong mệnh đề quan hệ xác định nói về động vật, có thể dùng <b>that</b>.<br><b>KEY CHUNKS:</b> <b>an animal that…</b> = một loài động vật mà…; <b>walk on four legs</b> = đi bằng bốn chân."},{"q":"The show starts ______ 7pm.","opts":["in","at","on"],"a":1,"why":"<b>VI:</b> Chương trình <b>bắt đầu lúc 7 giờ tối</b>.<br><b>RULE:</b> Dùng <b>at</b> với giờ cụ thể.<br><b>KEY CHUNKS:</b> <b>start at + time</b> = bắt đầu lúc…; <b>at 7pm</b> = lúc 7 giờ tối."},{"q":"I don't think it's right ______ parents to give unhealthy food to young children.","opts":["that","for","so"],"a":1,"why":"<b>VI:</b> Tôi không nghĩ việc cha mẹ <b>cho trẻ nhỏ ăn thực phẩm không lành mạnh</b> là đúng.<br><b>RULE:</b> Cấu trúc: <b>It is + adjective + for + someone + to + V</b>.<br><b>KEY CHUNKS:</b> <b>It is right for someone to do something</b> = việc ai làm gì là đúng; <b>give something to someone</b> = đưa/cho thứ gì cho ai; <b>unhealthy food</b> = đồ ăn không lành mạnh."},{"q":"Excuse me, I can't find the bread aisle. ______ you help me?","opts":["Should","Could","Shall"],"a":1,"why":"<b>VI:</b> Xin lỗi, tôi không tìm thấy quầy bánh mì. <b>Bạn có thể giúp tôi được không?</b><br><b>RULE:</b> <b>Could you + V…?</b> là mẫu yêu cầu lịch sự.<br><b>KEY CHUNKS:</b> <b>Could you help me?</b> = bạn có thể giúp tôi không?; <b>find the aisle</b> = tìm lối/quầy hàng."},{"q":"I ______ run very often, but now I go every morning.","opts":["wouldn't","didn't use to","didn't used to"],"a":1,"why":"<b>VI:</b> Trước đây tôi <b>không thường xuyên chạy bộ</b>, nhưng bây giờ sáng nào tôi cũng chạy.<br><b>RULE:</b> Phủ định của <b>used to</b>: <b>didn't use to + V</b>. Sau <b>didn't</b> dùng dạng nguyên thể <b>use</b>.<br><b>KEY CHUNKS:</b> <b>didn't use to + V</b> = trước đây không thường…; <b>go every morning</b> = đi/làm việc đó mỗi sáng."},{"q":"You ______ have worn a suit, as we have a relaxed dress code in this office.","opts":["needn't","ought to","wouldn't"],"a":0,"why":"<b>VI:</b> Bạn <b>đã không cần phải mặc vest</b>, vì văn phòng này có quy định trang phục khá thoải mái.<br><b>RULE:</b> <b>needn't have + V3</b> = đã làm một việc nhưng thực ra việc đó không cần thiết.<br><b>KEY CHUNKS:</b> <b>needn't have worn</b> = đã không cần phải mặc; <b>wear a suit</b> = mặc vest; <b>a relaxed dress code</b> = quy định trang phục thoải mái."},{"q":"How much ______ a flight to New York cost?","opts":["is","does","do"],"a":1,"why":"<b>VI:</b> <b>Một chuyến bay đến New York giá bao nhiêu?</b><br><b>RULE:</b> Chủ ngữ số ít <b>a flight</b> → dùng <b>does</b>: <b>How much does … cost?</b><br><b>KEY CHUNKS:</b> <b>How much does something cost?</b> = cái gì giá bao nhiêu?; <b>a flight to + place</b> = chuyến bay đến…."},{"q":"That man acts very suspiciously. ______ him.","opts":["Honestly, I wouldn't trust","I wouldn't honestly trust","I wouldn't trust honestly"],"a":0,"why":"<b>VI:</b> Người đàn ông đó hành động rất đáng ngờ. <b>Thành thật mà nói, tôi sẽ không tin anh ta.</b><br><b>RULE:</b> <b>Honestly</b> là trạng từ câu, rất tự nhiên khi đứng đầu câu để bình luận về toàn bộ phát ngôn.<br><b>KEY CHUNKS:</b> <b>act suspiciously</b> = hành động đáng ngờ; <b>Honestly, …</b> = thành thật mà nói…; <b>trust someone</b> = tin ai."},{"q":"I had a bath, ______ I went to bed.","opts":["after","then","while"],"a":1,"why":"<b>VI:</b> Tôi tắm, <b>sau đó tôi đi ngủ</b>.<br><b>RULE:</b> <b>then</b> dùng để nối hai hành động xảy ra theo trình tự.<br><b>KEY CHUNKS:</b> <b>have a bath</b> = tắm; <b>then</b> = sau đó; <b>go to bed</b> = đi ngủ."},{"q":"If I ______ to London, I wouldn't have met my boyfriend.","opts":["didn't move","haven't moved","hadn't moved"],"a":2,"why":"<b>VI:</b> Nếu tôi <b>đã không chuyển đến London</b>, tôi đã không gặp được bạn trai của mình.<br><b>RULE:</b> Câu điều kiện loại 3: <b>If + had + V3, would have + V3</b>.<br><b>KEY CHUNKS:</b> <b>move to + place</b> = chuyển đến nơi nào; <b>meet someone's boyfriend/girlfriend</b> = gặp bạn trai/bạn gái của ai; <b>wouldn't have met</b> = đã sẽ không gặp."}];
+
+const vocabTasks = [{"title":"TASK 1 · Similar meaning","instruction":"Write the letter (a–k) of the word that is most similar in meaning to the word on the left (1–5). Use each word once only. You will not need all of the words.","bank":["a. obscene","b. benefit","c. sneaky","d. antiquated","e. clever","f. reduction","g. essential","h. sharp","i. absent","j. wasteful","k. new"],"items":[{"q":"vital","answer":"essential","why":"<b>VI:</b> <b>vital</b> = cực kỳ quan trọng, thiết yếu.<br><b>MEANING:</b> <b>vital = essential</b>.<br><b>KEY CHUNKS:</b> <b>vital information</b> = thông tin thiết yếu; <b>play a vital role</b> = đóng vai trò thiết yếu; <b>be essential for/to something</b> = thiết yếu đối với…."},{"q":"perk","answer":"benefit","why":"<b>VI:</b> <b>perk</b> = quyền lợi thêm/phúc lợi ngoài lương.<br><b>MEANING:</b> <b>perk = benefit</b>.<br><b>KEY CHUNKS:</b> <b>job perks</b> = phúc lợi công việc; <b>employee benefits</b> = chế độ phúc lợi nhân viên; <b>a major benefit of</b> = một lợi ích lớn của…."},{"q":"old","answer":"antiquated","why":"<b>VI:</b> <b>antiquated</b> = cũ, lỗi thời, không còn phù hợp.<br><b>MEANING:</b> <b>old ≈ antiquated</b> trong nghĩa “lỗi thời”.<br><b>KEY CHUNKS:</b> <b>antiquated ideas</b> = quan niệm lỗi thời; <b>an antiquated system</b> = hệ thống lạc hậu."},{"q":"smart","answer":"clever","why":"<b>VI:</b> <b>smart/clever</b> = thông minh, nhanh trí.<br><b>MEANING:</b> <b>smart = clever</b>.<br><b>KEY CHUNKS:</b> <b>a clever idea</b> = ý tưởng thông minh; <b>a smart decision</b> = quyết định sáng suốt."},{"q":"discount","answer":"reduction","why":"<b>VI:</b> <b>discount</b> = giảm giá; <b>reduction</b> = sự giảm xuống.<br><b>MEANING:</b> A discount is a <b>reduction in price</b>.<br><b>KEY CHUNKS:</b> <b>get a discount</b> = được giảm giá; <b>offer a discount</b> = đưa ra mức giảm giá; <b>a reduction in price</b> = sự giảm giá."}],"choices":["obscene","benefit","sneaky","antiquated","clever","reduction","essential","sharp","absent","wasteful","new"]},{"title":"TASK 2 · Complete definitions","instruction":"Complete each definition (6–10) using a word from the list (a–k). Use each word once only. You will not need all of the words.","bank":["a. police","b. scarf","c. spoon","d. director","e. government","f. colleagues","g. outlaws","h. finger","i. skyscraper","j. submarine","k. knife"],"items":[{"q":"A group of people who work together in the same place are...","answer":"colleagues","why":"<b>VI CÂU:</b> Một nhóm người làm việc cùng nhau tại cùng một nơi là <b>đồng nghiệp</b>.<br><b>KEY:</b> <b>colleague</b> = đồng nghiệp; <b>work with colleagues</b> = làm việc với đồng nghiệp; <b>former colleague</b> = đồng nghiệp cũ."},{"q":"An accessory to keep your neck warm is a/an...","answer":"scarf","why":"<b>VI CÂU:</b> Một phụ kiện dùng để giữ ấm cổ là <b>khăn quàng</b>.<br><b>KEY:</b> <b>wear a scarf</b> = quàng khăn; <b>keep your neck warm</b> = giữ ấm cổ."},{"q":"A very tall building in a city is called a/an...","answer":"skyscraper","why":"<b>VI CÂU:</b> Một tòa nhà rất cao trong thành phố được gọi là <b>nhà chọc trời</b>.<br><b>KEY:</b> <b>skyscraper</b> = nhà chọc trời; <b>a towering skyscraper</b> = tòa nhà chọc trời cao vút."},{"q":"A kitchen utensil for cutting food is a/an...","answer":"knife","why":"<b>VI CÂU:</b> Một dụng cụ nhà bếp dùng để cắt thức ăn là <b>dao</b>.<br><b>KEY:</b> <b>kitchen knife</b> = dao bếp; <b>cut food with a knife</b> = cắt đồ ăn bằng dao."},{"q":"A group of politicians form a/an...","answer":"government","why":"<b>VI CÂU:</b> Một nhóm các chính trị gia tạo thành <b>chính phủ</b>.<br><b>KEY:</b> <b>form a government</b> = thành lập chính phủ; <b>central government</b> = chính quyền trung ương."}],"choices":["police","scarf","spoon","director","government","colleagues","outlaws","finger","skyscraper","submarine","knife"]},{"title":"TASK 3 · Complete sentences","instruction":"Complete each sentence (11–15) using a word from the list (a–k). Use each word once only. You will not need all of the words.","bank":["a. bag","b. ends","c. trick","d. pillow","e. wallet","f. witness","g. cottage","h. port","i. evidence","j. eyelash","k. cliffs"],"items":[{"q":"The ______ was easily able to identify the suspect.","answer":"witness","why":"<b>VI CÂU:</b> <b>Nhân chứng</b> có thể dễ dàng nhận diện nghi phạm.<br><b>KEY:</b> <b>witness</b> = nhân chứng; <b>identify the suspect</b> = nhận diện nghi phạm; <b>eyewitness account</b> = lời kể của nhân chứng."},{"q":"The ship loaded its cargo and left the ______.","answer":"port","why":"<b>VI CÂU:</b> Con tàu chất hàng lên rồi <b>rời cảng</b>.<br><b>KEY:</b> <b>load cargo</b> = chất hàng; <b>leave the port</b> = rời cảng; <b>cargo ship</b> = tàu chở hàng."},{"q":"Since I lost my job I have found it difficult to make ______ meet.","answer":"ends","why":"<b>VI CÂU:</b> Từ khi mất việc, tôi thấy khó có thể <b>xoay xở đủ tiền trang trải cuộc sống</b>.<br><b>KEY COLLOCATION:</b> <b>make ends meet</b> = xoay xở đủ tiền sống; <b>lose one's job</b> = mất việc."},{"q":"The judge threw the case out of court due to a lack of ______.","answer":"evidence","why":"<b>VI CÂU:</b> Thẩm phán bác vụ án khỏi tòa do <b>thiếu bằng chứng</b>.<br><b>KEY:</b> <b>a lack of evidence</b> = thiếu bằng chứng; <b>throw a case out of court</b> = bác/loại vụ án khỏi tòa."},{"q":"Men usually keep their money in a ______.","answer":"wallet","why":"<b>VI CÂU:</b> Đàn ông thường để tiền trong <b>ví</b>.<br><b>KEY:</b> <b>keep money in a wallet</b> = để tiền trong ví; <b>carry a wallet</b> = mang theo ví."}],"choices":["bag","ends","trick","pillow","wallet","witness","cottage","port","evidence","eyelash","cliffs"]},{"title":"TASK 4 · Verb / phrase choice","instruction":"Finish each sentence (16–20) using a word from the list (a–k). Use each word once only. You will not need all of the words.","bank":["a. borrow","b. project","c. put","d. rip","e. insure","f. lend","g. look","h. observe","i. claim","j. get","k. sue"],"items":[{"q":"My parents are going to ______ me the money to buy a new car.","answer":"lend","why":"<b>VI CÂU:</b> Bố mẹ tôi sẽ <b>cho tôi vay tiền</b> để mua một chiếc xe mới.<br><b>KEY:</b> <b>lend someone money</b> = cho ai vay tiền; <b>borrow money from someone</b> = vay tiền từ ai. <b>Lend</b> nhìn từ phía người cho, <b>borrow</b> nhìn từ phía người nhận."},{"q":"Astronomers ______ the stars at night through a telescope.","answer":"observe","why":"<b>VI CÂU:</b> Các nhà thiên văn <b>quan sát các vì sao</b> vào ban đêm qua kính thiên văn.<br><b>KEY:</b> <b>observe the stars</b> = quan sát các vì sao; <b>through a telescope</b> = qua kính thiên văn."},{"q":"The taxi driver tried to ______ me off by taking the long way home.","answer":"rip","why":"<b>VI CÂU:</b> Tài xế taxi cố <b>chặt chém/lừa tiền tôi</b> bằng cách đi đường vòng về nhà.<br><b>KEY PHRASAL VERB:</b> <b>rip someone off</b> = chặt chém/lừa tiền ai; <b>take the long way</b> = đi đường vòng."},{"q":"All my co-workers are my friends. We ______ on very well with each other.","answer":"get","why":"<b>VI CÂU:</b> Tất cả đồng nghiệp của tôi đều là bạn. Chúng tôi <b>rất hòa hợp với nhau</b>.<br><b>KEY PHRASAL VERB:</b> <b>get on well with someone</b> = hòa hợp với ai; <b>co-worker</b> = đồng nghiệp."},{"q":"My bag was stolen. Fortunately I had remembered to ______ my things.","answer":"insure","why":"<b>VI CÂU:</b> Túi của tôi bị lấy cắp. May mắn là tôi đã nhớ <b>mua bảo hiểm cho đồ đạc</b>.<br><b>KEY:</b> <b>insure something</b> = mua bảo hiểm cho vật gì; <b>be insured against theft</b> = được bảo hiểm chống mất cắp."}],"choices":["borrow","project","put","rip","insure","lend","look","observe","claim","get","sue"]},{"title":"TASK 5 · Collocations","instruction":"Write the word on the right (a–k) that is most often used with a word on the left (21–25). You will not need to use all the words. Use each word only once.","bank":["a. end","b. thumb","c. grin","d. excuse","e. survivor","f. bomb","g. trip","h. circle","i. ovation","j. cushion","k. ring"],"items":[{"q":"standing ______","answer":"ovation","why":"<b>VI:</b> <b>standing ovation</b> = tràng pháo tay đứng, khán giả đứng dậy vỗ tay để bày tỏ sự tán thưởng mạnh mẽ.<br><b>KEY COLLOCATION:</b> <b>receive/get a standing ovation</b> = nhận được tràng pháo tay đứng."},{"q":"bitter ______","answer":"end","why":"<b>VI:</b> <b>the bitter end</b> = đến tận cùng, cho đến giai đoạn cuối dù rất khó khăn.<br><b>KEY COLLOCATION:</b> <b>fight/stay until the bitter end</b> = chiến đấu/kiên trì đến cùng."},{"q":"sole ______","answer":"survivor","why":"<b>VI:</b> <b>sole survivor</b> = người sống sót duy nhất.<br><b>KEY COLLOCATION:</b> <b>the sole survivor of + event</b> = người sống sót duy nhất của…."},{"q":"vicious ______","answer":"circle","why":"<b>VI:</b> <b>vicious circle</b> = vòng luẩn quẩn, một vấn đề tạo ra vấn đề khác rồi quay lại làm tình hình tệ hơn.<br><b>KEY COLLOCATION:</b> <b>break the vicious circle</b> = phá vỡ vòng luẩn quẩn."},{"q":"sly ______","answer":"grin","why":"<b>VI:</b> <b>sly grin</b> = nụ cười ranh mãnh, kín đáo như thể biết điều gì đó.<br><b>KEY COLLOCATION:</b> <b>give a sly grin</b> = nở một nụ cười ranh mãnh."}],"choices":["end","thumb","grin","excuse","survivor","bomb","trip","circle","ovation","cushion","ring"]}];
+
+let state = {
+  tab:"grammar",
+  gPage:0,
+  vPage:0,
+  grammar:Array(25).fill(null),
+  vocab:Array(25).fill(null)
+};
+
+const moduleEl=document.getElementById("module");
+const stepbar=document.getElementById("stepbar");
+const resultCard=document.getElementById("resultCard");
+
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
+function score(){
+  const g=state.grammar.reduce((n,v,i)=>n+(v===grammar[i].a?1:0),0);
+  let vi=0, v=0;
+  vocabTasks.forEach(t=>t.items.forEach(it=>{ if(state.vocab[vi]===it.answer) v++; vi++; }));
+  return {g,v,total:g+v,answered:state.grammar.filter(x=>x!==null).length+state.vocab.filter(x=>x!==null).length};
+}
+function updateTop(){
+  const s=score();
+  document.getElementById("scoreTop").textContent=s.total;
+  document.getElementById("answeredTop").textContent=s.answered;
+  document.getElementById("progressBar").style.width=(s.answered/50*100)+"%";
+}
+function moduleDone(type,idx){
+  if(type==="grammar"){
+    return state.grammar.slice(idx*5,idx*5+5).every(v=>v!==null);
+  }
+  return state.vocab.slice(idx*5,idx*5+5).every(v=>v!==null);
+}
+function renderSteps(){
+  const labels=state.tab==="grammar" ? ["01–05","06–10","11–15","16–20","21–25"] : ["TASK 1","TASK 2","TASK 3","TASK 4","TASK 5"];
+  const p=state.tab==="grammar"?state.gPage:state.vPage;
+  stepbar.innerHTML=labels.map((x,i)=>`<button class="step ${i===p?"active":""} ${moduleDone(state.tab,i)?"done":""}" data-step="${i}">${x}</button>`).join("");
+  stepbar.querySelectorAll(".step").forEach(b=>b.onclick=()=>{
+    if(state.tab==="grammar")state.gPage=+b.dataset.step; else state.vPage=+b.dataset.step;
+    render();
+    window.scrollTo({top:document.querySelector(".tabs").offsetTop-80,behavior:"smooth"});
+  });
+}
+function renderGrammar(){
+  const p=state.gPage, start=p*5;
+  let body="";
+  for(let i=start;i<start+5;i++){
+    const item=grammar[i], chosen=state.grammar[i];
+    const answered=chosen!==null;
+    body+=`<div class="qcard" id="q-g-${i}">
+      <span class="qnum">${i+1}</span><div class="qtext">${item.q}</div>
+      <div class="options">`;
+    item.opts.forEach((o,j)=>{
+      let cls="";
+      if(answered){
+        if(j===chosen) cls=(j===item.a?"correct":"wrong");
+        else if(j===item.a) cls="reveal";
+      }
+      body+=`<button class="opt ${cls}" data-g="${i}" data-choice="${j}">
+        <span class="letter">${String.fromCharCode(65+j)}</span>${o}
+      </button>`;
+    });
+    if(answered){
+      const ok=chosen===item.a;
+      body+=`</div><div class="feedback show ${ok?"good":"bad"}">
+        ${ok?"✓ Correct":"✕ Not quite. Correct answer: <b>"+String.fromCharCode(65+item.a)+". "+item.opts[item.a]+"</b>"}
+        <div class="explain">${item.why}</div>
+      </div></div>`;
+    }else{
+      body+=`</div><div class="feedback"></div></div>`;
+    }
+  }
+  moduleEl.innerHTML=`
+    <div class="modulehead">
+      <div class="moduletitle"><small>Grammar dossier</small><h3>Questions ${start+1}–${start+5}</h3></div>
+      <div class="modulecount">${p+1}/5</div>
+    </div>
+    <div class="instructions">Choose the best answer. The item is marked immediately after you select an option.</div>
+    <div class="questions">${body}</div>
+    <div class="navrow">
+      <button class="navbtn prev" ${p===0?"disabled":""}>← BACK</button>
+      <span class="pageinfo">GRAMMAR ${p+1}/5</span>
+      <button class="navbtn next" ${p===4?"disabled":""}>NEXT →</button>
+    </div>`;
+  moduleEl.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+    const i=+b.dataset.g, c=+b.dataset.choice;
+    if(state.grammar[i]!==null) return;
+    state.grammar[i]=c; updateTop(); render();
+  });
+  const prev=moduleEl.querySelector(".prev"),next=moduleEl.querySelector(".next");
+  if(prev)prev.onclick=()=>{state.gPage--;render();scrollModule()};
+  if(next)next.onclick=()=>{state.gPage++;render();scrollModule()};
+}
+function renderVocab(){
+  const p=state.vPage, task=vocabTasks[p], base=p*5;
+  let body="";
+  task.items.forEach((it,idx)=>{
+    const gi=base+idx, selected=state.vocab[gi];
+    const answered=selected!==null;
+    const displayNo=gi+1;
+    let qText=it.q.replace("______",'<span style="background:#fff2ad;padding:0 4px;border-radius:5px">______</span>');
+    body+=`<div class="qcard" id="q-v-${gi}">
+      <span class="qnum">${displayNo}</span><div class="qtext">${qText}</div>
+      <select class="vocab ${answered?(selected===it.answer?"correct":"wrong"):""}" data-v="${gi}" ${answered?"disabled":""}>
+        <option value="">Choose from the word bank…</option>
+        ${task.choices.map(c=>`<option value="${esc(c)}" ${selected===c?"selected":""}>${esc(c)}</option>`).join("")}
+      </select>`;
+    if(answered){
+      const ok=selected===it.answer;
+      body+=`<div class="feedback show ${ok?"good":"bad"}">
+        ${ok?"✓ Correct":"✕ Not quite. Correct answer: <b>"+esc(it.answer)+"</b>"}
+        <div class="explain">${it.why}</div>
+      </div>`;
+    }else body+=`<div class="answerhint">One answer only · no browser storage</div>`;
+    body+=`</div>`;
+  });
+  moduleEl.innerHTML=`
+    <div class="modulehead">
+      <div class="moduletitle"><small>Vocabulary dossier</small><h3>${task.title}</h3></div>
+      <div class="modulecount">${p+1}/5</div>
+    </div>
+    <div class="instructions">${task.instruction}<div class="bank">${task.bank.map(x=>`<span>${x}</span>`).join("")}</div></div>
+    <div class="questions">${body}</div>
+    <div class="navrow">
+      <button class="navbtn prev" ${p===0?"disabled":""}>← BACK</button>
+      <span class="pageinfo">VOCAB ${p+1}/5</span>
+      <button class="navbtn next" ${p===4?"disabled":""}>NEXT →</button>
+    </div>`;
+  moduleEl.querySelectorAll("select.vocab").forEach(sel=>sel.onchange=()=>{
+    const i=+sel.dataset.v;
+    if(!sel.value)return;
+    state.vocab[i]=sel.value;updateTop();render();
+  });
+  const prev=moduleEl.querySelector(".prev"),next=moduleEl.querySelector(".next");
+  if(prev)prev.onclick=()=>{state.vPage--;render();scrollModule()};
+  if(next)next.onclick=()=>{state.vPage++;render();scrollModule()};
+}
+function scrollModule(){window.scrollTo({top:document.querySelector(".tabs").offsetTop-78,behavior:"smooth"});}
+function render(){
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.tab===state.tab));
+  renderSteps();
+  state.tab==="grammar"?renderGrammar():renderVocab();
+  updateTop();
+}
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
+  state.tab=t.dataset.tab;render();scrollModule();
+});
+document.getElementById("resetBtn").onclick=()=>{
+  if(confirm("Reset all 50 answers and start again?")){
+    state={tab:"grammar",gPage:0,vPage:0,grammar:Array(25).fill(null),vocab:Array(25).fill(null)};
+    resultCard.classList.remove("show");render();window.scrollTo({top:0,behavior:"smooth"});
+  }
+};
+function showResults(){
+  const s=score();
+  document.getElementById("resTotal").textContent=`${s.total}/50`;
+  document.getElementById("resGrammar").textContent=`${s.g}/25`;
+  document.getElementById("resVocab").textContent=`${s.v}/25`;
+  let title,msg;
+  const pct=s.answered?Math.round(s.total/s.answered*100):0;
+  if(s.answered<50){title=`${s.answered}/50 items completed`;msg=`Current accuracy: ${pct}%. Finish the unanswered items for a complete result.`}
+  else if(s.total>=45){title="Excellent control.";msg="Very high accuracy across both grammar and vocabulary. Review only the few missed items and their rules/collocations."}
+  else if(s.total>=38){title="Strong performance.";msg="Good overall control. Prioritise the incorrect items and repeat the relevant patterns until they become automatic."}
+  else if(s.total>=30){title="Developing well.";msg="Core knowledge is in place, but several patterns still need consolidation. Review wrong answers by topic rather than memorising isolated answers."}
+  else{title="Review recommended.";msg="Revisit the grammar rules and vocabulary chunks shown under the incorrect items, then reset and retake the test."}
+  document.getElementById("resTitle").textContent=title;
+  document.getElementById("resMsg").textContent=msg;
+  resultCard.classList.add("show");
+  resultCard.scrollIntoView({behavior:"smooth",block:"center"});
+}
+document.getElementById("showResult").onclick=showResults;
+
+document.getElementById("jumpWrong").onclick=()=>{
+  let wrong=null;
+  for(let i=0;i<25;i++){if(state.grammar[i]!==null && state.grammar[i]!==grammar[i].a){wrong={tab:"grammar",page:Math.floor(i/5),id:`q-g-${i}`};break}}
+  if(!wrong){
+    let k=0;
+    outer:for(let p=0;p<5;p++)for(let j=0;j<5;j++,k++){
+      if(state.vocab[k]!==null && state.vocab[k]!==vocabTasks[p].items[j].answer){wrong={tab:"vocab",page:p,id:`q-v-${k}`};break outer}
+    }
+  }
+  if(!wrong){alert("No wrong answered items to review yet.");return}
+  state.tab=wrong.tab;
+  if(wrong.tab==="grammar")state.gPage=wrong.page;else state.vPage=wrong.page;
+  render();
+  setTimeout(()=>document.getElementById(wrong.id)?.scrollIntoView({behavior:"smooth",block:"center"}),60);
+};
+
+document.getElementById("nextFloat").onclick=()=>{
+  if(state.tab==="grammar"){
+    if(state.gPage<4){state.gPage++;render();scrollModule();}
+    else{state.tab="vocab";state.vPage=0;render();scrollModule();}
+  }else{
+    if(state.vPage<4){state.vPage++;render();scrollModule();}
+    else showResults();
+  }
+};
+
+render();
+</script>
+</body>
+</html>
